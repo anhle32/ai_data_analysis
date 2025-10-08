@@ -121,8 +121,8 @@ if uploaded_file is not None:
 
                 # Lấy Nợ ngắn hạn (Dùng giá trị giả định hoặc lọc từ file nếu có)
                 # **LƯU Ý: Thay thế logic sau nếu bạn có Nợ Ngắn Hạn trong file**
-                no_ngan_han_N = 800  
-                no_ngan_han_N_1 = 600
+                no_ngan_han_N = df_processed[df_processed['Chỉ tiêu'].str.contains('NỢ NGẮN HẠN', case=False, na=False)]['Năm sau'].iloc[0]  
+                no_ngan_han_N_1 = df_processed[df_processed['Chỉ tiêu'].str.contains('NỢ NGẮN HẠN', case=False, na=False)]['Năm trước'].iloc[0]
 
                 # Tính toán
                 thanh_toan_hien_hanh_N = tsnh_n / no_ngan_han_N
