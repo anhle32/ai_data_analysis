@@ -24,7 +24,7 @@ def process_financial_data(df):
         df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
     
     # 1. Tính Tốc độ Tăng trưởng
-    # Dùng .replace(0, 1e-9) để tránh lỗi chia cho 0
+    # Dùng .replace(0, 1e-9) cho Series Pandas để tránh lỗi chia cho 0
     df['Tốc độ tăng trưởng (%)'] = (
         (df['Năm sau'] - df['Năm trước']) / df['Năm trước'].replace(0, 1e-9)
     ) * 100
@@ -39,9 +39,17 @@ def process_financial_data(df):
     tong_tai_san_N_1 = tong_tai_san_row['Năm trước'].iloc[0]
     tong_tai_san_N = tong_tai_san_row['Năm sau'].iloc[0]
 
-    # Tính tỷ trọng (dùng .replace(0, 1e-9) cho mẫu số)
-    df['Tỷ trọng Năm trước (%)'] = (df['Năm trước'] / tong_tai_san_N_1.replace(0, 1e-9)) * 100
-    df['Tỷ trọng Năm sau (%)'] = (df['Năm sau'] / tong_tai_san_N.replace(0, 1e-9)) * 100
+    # ******************************* PHẦN SỬA LỖI BẮT ĐẦU *******************************
+    # Lỗi xảy ra khi dùng .replace() trên giá trị đơn lẻ (numpy.int64).
+    # Sử dụng điều kiện ternary để xử lý giá trị 0 thủ công cho mẫu số.
+    
+    divisor_N_1 = tong_tai_san_N_1 if tong_tai_san_N_1 != 0 else 1e-9
+    divisor_N = tong_tai_san_N if tong_tai_san_N != 0 else 1e-9
+
+    # Tính tỷ trọng với mẫu số đã được xử lý
+    df['Tỷ trọng Năm trước (%)'] = (df['Năm trước'] / divisor_N_1) * 100
+    df['Tỷ trọng Năm sau (%)'] = (df['Năm sau'] / divisor_N) * 100
+    # ******************************* PHẦN SỬA LỖI KẾT THÚC *******************************
     
     return df
 
@@ -106,7 +114,6 @@ if uploaded_file is not None:
             
             try:
                 # Lọc giá trị cho Chỉ số Thanh toán Hiện hành (Ví dụ)
-                # Giả định: TÀI SẢN NGẮN HẠN và NỢ NGẮN HẠN có tồn tại trong file
                 
                 # Lấy Tài sản ngắn hạn
                 tsnh_n = df_processed[df_processed['Chỉ tiêu'].str.contains('TÀI SẢN NGẮN HẠN', case=False, na=False)]['Năm sau'].iloc[0]
@@ -114,7 +121,6 @@ if uploaded_file is not None:
 
                 # Lấy Nợ ngắn hạn (Dùng giá trị giả định hoặc lọc từ file nếu có)
                 # **LƯU Ý: Thay thế logic sau nếu bạn có Nợ Ngắn Hạn trong file**
-                # Ở đây TÔI DÙNG GIẢ ĐỊNH để đảm bảo code không lỗi khi chưa có
                 no_ngan_han_N = 800  
                 no_ngan_han_N_1 = 600
 
