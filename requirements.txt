@@ -1,7 +1,16 @@
-streamlit
-numpy
-pandas
-matplotlib
-seaborn
-scikit-learn
+# requirements.txt
 
+# Thư viện chính cho Streamlit
+streamlit
+
+# Thư viện xử lý dữ liệu chính
+pandas
+
+# Thư viện cho chức năng AI (sử dụng Gemini API)
+google-genai
+
+# Thư viện cần thiết để pandas đọc và ghi file Excel (.xlsx)
+openpyxl
+
+# Thêm thư viện này nếu bạn dùng các định dạng Excel cũ (.xls)
+# xlrd
