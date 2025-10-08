@@ -12,5 +12,5 @@ google-genai
 # Thư viện cần thiết để pandas đọc và ghi file Excel (.xlsx)
 openpyxl
 
-# Thêm thư viện này nếu bạn dùng các định dạng Excel cũ (.xls)
-# xlrd
+# THÊM THƯ VIỆN NÀY ĐỂ GIẢI QUYẾT LỖI to_markdown()
+tabulate
