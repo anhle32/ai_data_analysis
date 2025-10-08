@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit run logis.py
+web: sh setup.sh && streamlit run python.py
